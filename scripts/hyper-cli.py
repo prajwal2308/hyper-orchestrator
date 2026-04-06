@@ -194,12 +194,26 @@ class HyperOrchestrator:
             # Group by dependencies
             # Simplified: run in order but allow same-level parallelism
             for task in tasks:
-                deps_met = all(phase_results.get(dep, previous_results.get(dep)).status == "completed" 
-                              for dep in task.get('deps', []))
+                # Safely check dependencies
+                deps_met = True
+                for dep in task.get('deps', []):
+                    dep_result = phase_results.get(dep) or previous_results.get(dep)
+                    if not dep_result or dep_result.status != "completed":
+                        deps_met = False
+                        break
+                
                 if deps_met:
                     worker = WorkerAgent(1, self.api_token)
                     result = await worker.execute(task, {**previous_results, **phase_results})
                     phase_results[task['id']] = result
+                else:
+                    # Mark as failed due to unmet dependencies
+                    phase_results[task['id']] = TaskResult(
+                        task_id=task['id'],
+                        agent_type=task['agent_type'],
+                        status="failed",
+                        error="Dependencies not met"
+                    )
         
         return phase_results
     
@@ -254,6 +268,11 @@ class HyperOrchestrator:
             } for k, v in all_results.items()},
             "total_time": total_time
         }
+
+
+def print_progress(msg: str):
+    """Print with immediate flush for real-time streaming"""
+    print(msg, flush=True)
 
 
 def main():
