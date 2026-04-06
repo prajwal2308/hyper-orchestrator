@@ -1,0 +1,56 @@
+{
+  "name": "Full-Stack Feature Development",
+  "description": "Parallel code generation with architectural dependencies",
+  "tasks": [
+    {
+      "id": "design-arch",
+      "prompt": "Design system architecture for a real-time job search dashboard. Define: data models, API contracts, component structure, state management approach. Return detailed design document.",
+      "deps": []
+    },
+    {
+      "id": "scaffold-backend",
+      "prompt": "Based on architecture design, generate FastAPI backend scaffold with models, routes, and database setup. Include proper structure and dependencies.",
+      "deps": ["design-arch"]
+    },
+    {
+      "id": "scaffold-frontend",
+      "prompt": "Based on architecture design, generate Next.js frontend scaffold with component structure, API clients, and state management. Include proper project setup.",
+      "deps": ["design-arch"]
+    },
+    {
+      "id": "implement-api",
+      "prompt": "Implement core API endpoints for job search dashboard: GET /jobs, POST /jobs, GET /jobs/{id}, DELETE /jobs/{id}. Include validation and error handling.",
+      "deps": ["scaffold-backend"]
+    },
+    {
+      "id": "implement-frontend-components",
+      "prompt": "Implement React components for job dashboard: JobList, JobCard, SearchBar, FilterPanel. Use TypeScript, Tailwind, and match API contracts.",
+      "deps": ["scaffold-frontend"]
+    },
+    {
+      "id": "integrate",
+      "prompt": "Integrate frontend and backend: wire up API calls, handle loading/error states, ensure end-to-end functionality. Provide integration checklist.",
+      "deps": ["implement-api", "implement-frontend-components"]
+    },
+    {
+      "id": "generate-tests",
+      "prompt": "Generate test suite: unit tests for API endpoints, component tests for React, integration tests for critical paths. Include test configuration.",
+      "deps": ["integrate"]
+    },
+    {
+      "id": "create-docs",
+      "prompt": "Create documentation: README with setup instructions, API documentation, component usage guide, deployment guide.",
+      "deps": ["integrate"]
+    }
+  ],
+  "parallel_groups": {
+    "scaffold": ["scaffold-backend", "scaffold-frontend"],
+    "implementation": ["implement-api", "implement-frontend-components"]
+  },
+  "estimated_performance": {
+    "sequential_time": "2 hours",
+    "parallel_time": "45 minutes",
+    "speedup": "2.7x",
+    "architectural_benefit": "Design-first approach prevents rework"
+  }
+}

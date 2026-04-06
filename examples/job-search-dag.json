@@ -1,0 +1,75 @@
+{
+  "name": "Intelligent Job Search Pipeline",
+  "description": "DAG-based parallel job search with dependency resolution",
+  "tasks": [
+    {
+      "id": "search",
+      "prompt": "Search for software engineering jobs posted in last 24 hours. Use web search to find 10+ opportunities. Return job title, company, location, and application link for each.",
+      "deps": []
+    },
+    {
+      "id": "verify",
+      "prompt": "For each job from the search results, visit the company career page and verify: 1) Job is actually posted, 2) Requirements match entry-to-mid level, 3) Location is suitable. Return verified jobs with confirmation details.",
+      "deps": ["search"]
+    },
+    {
+      "id": "filter",
+      "prompt": "Filter verified jobs to remove duplicates and already-applied companies. Compare against tracker data. Return unique jobs worth applying to.",
+      "deps": ["verify"]
+    },
+    {
+      "id": "analyze-jd-1",
+      "prompt": "Analyze job description for job 1. Extract: required skills, nice-to-have skills, company tech stack, role expectations. Return structured analysis.",
+      "deps": ["filter"]
+    },
+    {
+      "id": "analyze-jd-2",
+      "prompt": "Analyze job description for job 2. Extract: required skills, nice-to-have skills, company tech stack, role expectations. Return structured analysis.",
+      "deps": ["filter"]
+    },
+    {
+      "id": "analyze-jd-3",
+      "prompt": "Analyze job description for job 3. Extract: required skills, nice-to-have skills, company tech stack, role expectations. Return structured analysis.",
+      "deps": ["filter"]
+    },
+    {
+      "id": "tailor-resume-1",
+      "prompt": "Using the base resume and JD analysis for job 1, create a tailored one-page LaTeX resume. Match location, prioritize relevant skills, rewrite professional summary. Return complete .tex file.",
+      "deps": ["analyze-jd-1"]
+    },
+    {
+      "id": "tailor-resume-2",
+      "prompt": "Using the base resume and JD analysis for job 2, create a tailored one-page LaTeX resume. Match location, prioritize relevant skills, rewrite professional summary. Return complete .tex file.",
+      "deps": ["analyze-jd-2"]
+    },
+    {
+      "id": "tailor-resume-3",
+      "prompt": "Using the base resume and JD analysis for job 3, create a tailored one-page LaTeX resume. Match location, prioritize relevant skills, rewrite professional summary. Return complete .tex file.",
+      "deps": ["analyze-jd-3"]
+    },
+    {
+      "id": "compile-pdfs",
+      "prompt": "Compile all tailored .tex resumes to PDF using pdflatex. Verify each is exactly one page. Clean up auxiliary files. Confirm PDF generation success.",
+      "deps": ["tailor-resume-1", "tailor-resume-2", "tailor-resume-3"]
+    },
+    {
+      "id": "update-tracker",
+      "prompt": "Update job search tracker CSV with all companies and roles from verified jobs. Ensure no duplicates. Confirm tracking update.",
+      "deps": ["compile-pdfs"]
+    },
+    {
+      "id": "send-email",
+      "prompt": "Send comprehensive email to praju9rt@gmail.com with: 1) Verified job list with links, 2) Tailored resume PDFs as attachments, 3) Application guidance per job, 4) Tracker confirmation. Use send_email_to_user tool.",
+      "deps": ["update-tracker"]
+    }
+  ],
+  "parallel_groups": {
+    "jd_analysis": ["analyze-jd-1", "analyze-jd-2", "analyze-jd-3"],
+    "resume_tailoring": ["tailor-resume-1", "tailor-resume-2", "tailor-resume-3"]
+  },
+  "optimizations": {
+    "estimated_time_saved_vs_sequential": "75%",
+    "critical_path": ["search", "verify", "filter", "analyze-jd-*", "tailor-resume-*", "compile-pdfs", "update-tracker", "send-email"],
+    "bottleneck": "compile-pdfs (requires all resumes first)"
+  }
+}

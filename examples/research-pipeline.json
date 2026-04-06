@@ -1,0 +1,45 @@
+{
+  "name": "Multi-Source Research Synthesis",
+  "description": "Parallel research from multiple sources with intelligent fusion",
+  "tasks": [
+    {
+      "id": "search-web",
+      "prompt": "Search the web for latest developments in AI agent orchestration (2024-2025). Find 5 key articles, papers, or announcements. Summarize findings.",
+      "deps": []
+    },
+    {
+      "id": "search-x",
+      "prompt": "Search X/Twitter for recent discussions about AI agent orchestration. Find thought leaders and key insights. Summarize community sentiment.",
+      "deps": []
+    },
+    {
+      "id": "search-github",
+      "prompt": "Search GitHub for trending repositories related to AI agent orchestration. Find top 5 projects by stars/activity. Summarize approaches.",
+      "deps": []
+    },
+    {
+      "id": "search-papers",
+      "prompt": "Search for recent research papers (2024-2025) on AI agent orchestration, multi-agent systems, parallel LLM execution. Summarize academic progress.",
+      "deps": []
+    },
+    {
+      "id": "synthesize",
+      "prompt": "Synthesize findings from all parallel research streams (web, X, GitHub, papers). Identify: 1) Market gaps, 2) Technical trends, 3) Opportunities for innovation. Create comprehensive research report.",
+      "deps": ["search-web", "search-x", "search-github", "search-papers"]
+    }
+  ],
+  "parallel_groups": {
+    "research_phase": ["search-web", "search-x", "search-github", "search-papers"]
+  },
+  "fusion_strategy": {
+    "mode": "intelligent",
+    "deduplication": true,
+    "conflict_resolution": "latest_source_priority"
+  },
+  "estimated_performance": {
+    "sequential_time": "15 minutes",
+    "parallel_time": "5 minutes",
+    "speedup": "3x",
+    "fusion_quality": "Higher coherence than manual synthesis"
+  }
+}

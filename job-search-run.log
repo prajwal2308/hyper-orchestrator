@@ -1,0 +1,53 @@
+
+╔══════════════════════════════════════════════════════════════════════════╗
+║                                                                          ║
+║     🚀 JOB SEARCH WORKFLOW BENCHMARK: Sequential vs Parallel 🚀          ║
+║                                                                          ║
+║     Testing real job search workflow with 9 dependent tasks:             ║
+║     1. Search jobs → 2. Verify → 3-5. Analyze JDs → 6-8. Tailor        ║
+║                                                                          ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+
+⏱️  SEQUENTIAL EXECUTION MODE
+==================================================
+
+[SEQUENTIAL] Starting task: search
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/aiohttp/client_reqrep.py", line 1022, in start
+    message, payload = await protocol.read()  # type: ignore[union-attr]
+                       ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/aiohttp/streams.py", line 643, in read
+    await self._waiter
+asyncio.exceptions.CancelledError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/workspace/Skills/hyper-orchestrator/scripts/job-search-comparison.py", line 299, in <module>
+    result = asyncio.run(main())
+             ^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/asyncio/runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/asyncio/base_events.py", line 684, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/home/workspace/Skills/hyper-orchestrator/scripts/job-search-comparison.py", line 279, in main
+    seq_result = await sequential_execution(JOB_SEARCH_TASKS, api_token)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/workspace/Skills/hyper-orchestrator/scripts/job-search-comparison.py", line 123, in sequential_execution
+    async with session.post(
+  File "/usr/local/lib/python3.12/site-packages/aiohttp/client.py", line 1355, in __aenter__
+    self._resp: _RetType = await self._coro
+                           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/aiohttp/client.py", line 686, in _request
+    await resp.start(conn)
+  File "/usr/local/lib/python3.12/site-packages/aiohttp/client_reqrep.py", line 1017, in start
+    with self._timer:
+  File "/usr/local/lib/python3.12/site-packages/aiohttp/helpers.py", line 736, in __exit__
+    raise asyncio.TimeoutError from exc_val
+TimeoutError

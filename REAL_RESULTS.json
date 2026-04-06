@@ -1,0 +1,54 @@
+{
+  "report": {
+    "sequential_time": 36.21339297294617,
+    "parallel_time": 8.551819801330566,
+    "speedup": 4.234583259964362,
+    "time_saved": 27.6615731716156,
+    "task_count": 4,
+    "timestamp": 1775481544.3372383
+  },
+  "sequential": [
+    {
+      "task": "Summarize what Kubernetes is in 3 sentences",
+      "duration": 8.141907215118408,
+      "result": "Kubernetes is an open-source container orchestration platform that automates the deployment, scaling"
+    },
+    {
+      "task": "Summarize what Docker is in 3 sentences",
+      "duration": 6.112178087234497,
+      "result": "Docker is a platform that packages applications with all their dependencies into lightweight, portab"
+    },
+    {
+      "task": "Summarize what React is in 3 sentences",
+      "duration": 16.58185362815857,
+      "result": "React is a JavaScript library for building user interfaces using reusable, self-contained components"
+    },
+    {
+      "task": "Summarize what Python is in 3 sentences",
+      "duration": 5.377328872680664,
+      "result": "Python is a high-level, interpreted programming language known for its clean syntax and readability."
+    }
+  ],
+  "parallel": [
+    {
+      "task": "Summarize what Kubernetes is in 3 sentences",
+      "duration": 5.358384370803833,
+      "result": "Kubernetes is an open-source container orchestration platform that automates the deployment, scaling"
+    },
+    {
+      "task": "Summarize what Docker is in 3 sentences",
+      "duration": 5.923647880554199,
+      "result": "Docker is a containerization platform that packages applications with their dependencies into portab"
+    },
+    {
+      "task": "Summarize what React is in 3 sentences",
+      "duration": 7.240943193435669,
+      "result": "React is a JavaScript library for building user interfaces, developed by Meta. It uses a component-b"
+    },
+    {
+      "task": "Summarize what Python is in 3 sentences",
+      "duration": 8.551079034805298,
+      "result": "Python is a high-level, interpreted programming language designed for readability and simplicity. It"
+    }
+  ]
+}
